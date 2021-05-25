@@ -1,7 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:todo_flutter/widgets/task_list.dart';
+import 'package:todo_flutter/screens/add_task_screen.dart';
+import 'package:todo_flutter/models/task.dart';
 
-class Taskscreen extends StatelessWidget {
-  const Taskscreen({Key key}) : super(key: key);
+class Taskscreen extends StatefulWidget {
+  @override
+  _TaskscreenState createState() => _TaskscreenState();
+}
+
+class _TaskscreenState extends State<Taskscreen> {
+  List<Task> task = [
+    Task(name: 'Buy bread'),
+    Task(name: 'Buy eggs'),
+    Task(name: 'Buy soda '),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -10,6 +22,16 @@ class Taskscreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.lightBlueAccent,
         child: Icon(Icons.add),
+        onPressed: () {
+          showModalBottomSheet(
+              context: context,
+              builder: (context) => AddTaskscreen((newtasktitle) {
+                    setState(() {
+                      task.add(Task(name: newtasktitle));
+                    });
+                    Navigator.pop(context);
+                  }));
+        },
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,7 +61,7 @@ class Taskscreen extends StatelessWidget {
                       fontWeight: FontWeight.w700),
                 ),
                 Text(
-                  '12 Task',
+                  '${task.length}Tasks',
                   style: TextStyle(color: Colors.white, fontSize: 18),
                 ),
               ],
@@ -59,31 +81,6 @@ class Taskscreen extends StatelessWidget {
             ),
           )
         ],
-      ),
-    );
-  }
-}
-
-class TaskList extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      children: <Widget>[
-        TaskTile(),
-        TaskTile(),
-        TaskTile(),
-      ],
-    );
-  }
-}
-
-class TaskTile extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      title: Text('This is my task'),
-      trailing: Checkbox(
-        value: false,
       ),
     );
   }
